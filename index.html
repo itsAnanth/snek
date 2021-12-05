@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snek Game</title>
+    <link rel="stylesheet" href="./loader.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./gameOver.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@700&display=swap" rel="stylesheet">
+    <script src="./Snake.js" defer></script>
+    <script src="./Controller.js" defer></script>
+    <script src="./Food.js" defer></script>
+    <script src="./main.js" defer></script>
+    <style>
+        * {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            overscroll-behavior: none;
+            height: 100%;
+
+        }
+
+        .wrapper {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas {
+            background-color: black;
+        }
+
+        #score {
+            position: fixed;
+            right: 0;
+            z-index: 1;
+            font-size: 50px;
+            padding: 5px 10px 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="over" id="over">
+        <div id="over_text"></div>
+    </div>
+    <div class="preloader" id="loader">
+        <div class='loader'></div>
+    </div>
+    <div id="score">0</div>
+    <div class="wrapper">
+        <canvas class="canvas" id="canvas"></canvas>
+    </div>
+</body>
+
+</html>

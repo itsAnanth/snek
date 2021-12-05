@@ -1,0 +1,33 @@
+.over {
+    background-color: #222222;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999999;
+    display: flex;
+    display: -ms-flexbox;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    align-items: center;
+    justify-content: center;
+    transition: all 1s ease;
+    flex-wrap: wrap;
+    -webkit-transition: all 1s ease;
+    opacity: 0;
+}
+
+.over.show {
+    opacity:100;
+}
+
+#game_over {
+    font-size: 32px;
+    color: white;
+}
+
+#over_text {
+    font-size: 32px;
+    color: white;
+}
