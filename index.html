@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="./loader.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="./gameOver.css">
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@700&display=swap" rel="stylesheet">
     <script src="./Snake.js" defer></script>
-    <script src="./Controller.js" defer></script>
+    <script src="./utils.js" defer></script>
     <script src="./Food.js" defer></script>
+    <script src="./Game.js" defer></script>
     <script src="./main.js" defer></script>
     <style>
         * {
@@ -38,7 +38,7 @@
             justify-content: center;
         }
 
-        .canvas {
+        .game_canvas {
             background-color: black;
         }
 
@@ -46,6 +46,7 @@
             position: fixed;
             right: 0;
             z-index: 1;
+            color: rgb(7, 219, 7);
             font-size: 50px;
             padding: 5px 10px 5px;
         }
@@ -62,7 +63,7 @@
     </div>
     <div id="score">0</div>
     <div class="wrapper">
-        <canvas class="canvas" id="canvas"></canvas>
+        <canvas class="game_canvas" id="game_canvas"></canvas>
     </div>
 </body>
 

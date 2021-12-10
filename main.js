@@ -1,39 +1,23 @@
-const canvas = document.getElementById('canvas');
-setCanvasDimensions(canvas);
-const snake = new Snake(canvas);
+const canvas = document.getElementById('game_canvas');
 const loaderComponent = document.getElementById('loader')
-const controller = new Controller(snake, canvas);
-const overScreen = document.getElementById('over')
-window.addEventListener('keyup', controller.handler.bind(controller));
-window.addEventListener('keydown', controller.handler.bind(controller))
 
-let loader = setInterval(() => {
-    if (snake.finishedRendering) {
-        clearInterval(loader);
-        loaderComponent.classList.add('opacity-0')
-    }
-}, 500)
+initLoader();
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const snake = new Snake({ x: canvas.width, y: canvas.height }, 20);
+const game = new Game(snake, canvas);
 
-render();
-async function render() {
-    if (!snake.alive) return handleFinish();
-    snake.checkCollision();
-    controller.update();
-    snake.render();
-    await wait(99);
-    requestAnimationFrame(render)
-}
+window.addEventListener('keydown', snake.controller.bind(snake));
+window.addEventListener('keyup', snake.controller.bind(snake));
+game.run();
 
-function handleFinish() {
-    overScreen.classList.add('show');
-    overScreen.children[0].innerHTML = `Your score: ${snake.score}`
-}
-function setCanvasDimensions(canvas) {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight;
-}
 
-function wait(ms) {
-    return new Promise(res => setTimeout(res, ms));
+function initLoader() {
+    let loader = setInterval(() => {
+        if (game.finishedRendering) {
+            clearInterval(loader);
+            loaderComponent.classList.add('opacity-0')
+        }
+    }, 500)
 }
 

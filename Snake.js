@@ -1,109 +1,72 @@
 class Snake {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.width = 32;
-        this.height = 32;
-        this.alive = true;
-        this.score = 0;
-        this.snake_col = 'lightblue';
-        this.snake_border = '#000000';
+    constructor({ x, y }, size) {
+        this.x = getRandPos(x);
+        this.y = getRandPos(y);
         this.x_vel = 0;
         this.y_vel = 0;
-        this.finishedRendering = false;
-        this.scoreHolder = document.getElementById('score');
-        this.ctx = canvas.getContext('2d');
+        this.size = size;
+        this.up = false;
         this.controls = {
-            left: false,
-            right: false,
             up: false,
-            down: false
+            down: false,
+            right: false,
+            left: false
         }
-        this.snake = new Array();
-        this.snake.push({
-            x: this.rand(0, canvas.width),
-            y: this.rand(0, canvas.height)
-        });
-        this.x = this.snake[0].x;
-        this.y = this.snake[0].y;
-        this.food = null;
-    }
+        this.color = 'white';
+        this.unitSpeed = 20;
+        this.body = new Array();
 
-    genFood() {
-        this.food = new Food(this.canvas);
+        this.body.push({ x: this.x, y: this.y })
     }
 
     head() {
-        return this.snake[0];
+        return this.body[0];
     }
 
-    addScore() {
-        this.score++;
-        this.scoreHolder.innerText = this.score;
-    }
+    controller(event) {
+        const controls = this.controls;
+        const state = event.type == 'keydown' ? true : false;
 
-    drawBoard(){
-        const canvas = this.canvas;
-        const bw = canvas.width;
-        const bh = canvas.height;
-        const context = canvas.getContext('2d');
-        context.lineWidth = 2;
-        context.fillStyle = '#80af49';
-        context.strokeStyle = "#808080";
-        for (let x = 0; x < bw; x += this.width) {
-            for (let y = 0; y < bh; y += this.width) {
-               context.strokeRect(x, y, this.width, this.height); 
-               context.fillRect(x, y, this.width, this.height);
-            }
+        switch (event.key) {
+            case 'ArrowUp': case 'w':
+                controls.up = state;
+                break; case 'a':
+            case 'ArrowLeft':
+                controls.left = state;
+                break; case 'd':
+            case 'ArrowRight':
+                controls.right = state;
+                break;
+            case 'ArrowDown': case 's':
+                controls.down = state;
+                break;
         }
     }
 
-    render() {
-        if (!this.food) this.genFood();
-        const context = this.ctx;
-        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawBoard();
-        context.beginPath();
-        context.fillStyle = '#ff0000';
-        context.rect(this.food.x, this.food.y, this.food.width, this.food.height);
-        context.fill();
-
-        for (let i = 0; i < this.snake.length; i++) {
-            context.fillStyle = this.snake_col;
-            context.strokestyle = this.snake_border;
-            context.fillRect(this.snake[i].x, this.snake[i].y, this.width, this.height);
-            context.strokeRect(this.snake[i].x, this.snake[i].y, this.width, this.height);
-        }
-        this.finishedRendering = !this.finishedRendering ? true : false;
-    }
-
-    checkCollision() {
+    update() {
+        const controls = this.controls;
         const head = this.head();
-        if (
-            (head.x < 0 || head.x > this.canvas.width + this.width) ||
-            (head.y < 0 || head.y > this.canvas.height + this.height)
-        ) this.alive = false
-    
-        for (let i = 1; i < this.snake.length; i++) {
-            if (
-                (head.x > this.snake[i].x && head.x < this.snake[i].x + this.width) && 
-                (head.y > this.snake[i].y && head.y < this.snake[i].y + this.height)
-            ) this.alive = false;
+        if (controls.up && this.y_vel == 0) {
+            this.y_vel = -this.unitSpeed;
+            this.x_vel = 0;
         }
-        if (
-            this.food &&
-            (head.x == this.food.x) && (head.y == this.food.y)
-        ) {
-            this.food = null;
-            this.addScore()
-        } else this.snake.pop();
 
-        this.snake.unshift({ x: head.x, y: head.y })
-        // return false;
+
+        if (controls.left && this.x_vel == 0) {
+            this.x_vel = -this.unitSpeed;
+            this.y_vel = 0;
+        }
+
+        if (controls.right && this.x_vel == 0) {
+            this.x_vel = this.unitSpeed;
+            this.y_vel = 0;
+        }
+        if (controls.down && this.y_vel == 0) {
+            this.y_vel = this.unitSpeed;
+            this.x_vel = 0;
+        }
+
+        head.x += this.x_vel;
+        head.y += this.y_vel
     }
-
-    rand(min, max) {
-        return Math.round((Math.random() * (max - min) + min) / this.width) * this.width;
-    }
-
 }
-
